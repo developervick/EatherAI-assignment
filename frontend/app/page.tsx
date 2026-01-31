@@ -19,6 +19,7 @@ export default function Home() {
           <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
             Welcome to the new project
           </p>
+          <h1>New Deployement has been done</h1>
         </div>
       </main>
     </div>
