@@ -1,67 +1,47 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { IoMdAddCircle } from "react-icons/io";
 import Link from "next/link";
 import { FaBuildingUser } from "react-icons/fa6";
+import { api } from "@/utils/wretch";
+import toast from "react-hot-toast";
 
 export default function DepartmentsPage() {
-  const [departments, setDepartments] = useState([
-    {
-      id: 1,
-      name: "Engineering",
-      description:
-        "Responsible for software development and technical projects.",
-    },
-    {
-      id: 2,
-      name: "Product",
-      description: "Responsible for product strategy and roadmap.",
-    },
-    {
-      id: 3,
-      name: "Design",
-      description: "Responsible for user experience and visual design.",
-    },
-    {
-      id: 4,
-      name: "Data Science",
-      description: "Responsible for data analysis and machine learning.",
-    },
-    {
-      id: 5,
-      name: "DevOps",
-      description: "Responsible for deployment and infrastructure management. dbkjwewk jedbwqd djbqw dwqmned jqw qwmdnmwq djqw dmq wdbqw d qewme kjqwb qwm edeqwide w dqnw edj wend mqw w mqw e qjwe dnkw nde qjwk dknq wd qkw dk qwkd ekwj1 dkjw nkd nwq kj dnkw ewq kq dnkw qd wqnke dnkqw dn qwj dkqw  ewq dnqw nk qnk kjqw nwq dn qe dnqwke dk w dnkq wdnk wqdkn qwkd wq",
-    },
-    {
-      id: 6,
-      name: "QA",
-      description: "Responsible for quality assurance and testing.",
-    },
-    {
-      id: 7,
-      name: "Technical Writing",
-      description: "Responsible for creating technical documentation.",
-    },
-    {
-      id: 8,
-      name: "HR",
-      description: "Responsible for human resources and employee relations.",
-    },
-    {
-      id: 9,
-      name: "Marketing",
-      description: "Responsible for marketing and brand management.",
-    },
-    {
-      id: 10,
-      name: "Sales",
-      description: "Responsible for sales and customer acquisition.",
-    },
-  ]);
+  const [departments, setDepartments] = useState<{ id: number; name: string; description: string }[]>([]);
 
-  const fetchDepartments = () => {
-    
+  useEffect(() => {
+  let isMounted = true;
+
+  const fetchDepartments = async () => {
+    try {
+      const response = await api.get("/departments/").json();
+      if (isMounted) {
+        setDepartments(response.departments as { id: number; name: string; description: string }[]);
+      }
+    } catch (error) {
+      toast.error("Failed to fetch departments. Please try again later.");
+      console.error("Error fetching departments:", error);
+    }
+  };
+
+  fetchDepartments();
+
+  return () => {
+    isMounted = false;
+  };
+}, []);
+
+
+  const handleDelete = async (id: number) => {
+    try {
+      await api.delete(`/departments/${id}/`).res();
+      setDepartments((prev) => prev.filter((dept) => dept.id !== id));
+      toast.success("Department deleted successfully.");
+    } catch (error) {
+      toast.error("Failed to delete department. Please try again later.");
+      console.error("Error deleting department:", error);
+    }
   }
 
   return (
@@ -89,7 +69,7 @@ export default function DepartmentsPage() {
                     {department.description}
                   </p>
                 </div>
-                <button className="ml-auto px-3 py-1 text-sm text-white rounded hover:bg-red-600 transition-colors duration-200 border border-red-600">
+                <button onClick={()=> handleDelete(department.id)} className="ml-auto px-3 py-1 text-sm text-white rounded hover:bg-red-600 transition-colors duration-200 border border-red-600">
                   Delete
                 </button>
               </div>

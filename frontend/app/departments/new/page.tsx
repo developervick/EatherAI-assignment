@@ -1,6 +1,9 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { api } from "@/utils/wretch";
+import toast from 'react-hot-toast';
+
 
 
 
@@ -11,18 +14,17 @@ export default function AddDepartmentPage() {
     });
     const router = useRouter();
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        // Handle form submission logic here (e.g., send data to the server)
-        console.log("Form Data:", formData);
-        router.push("/departments"); // Redirect to the departments page after submission
+        try {
+            await api.post(formData, "/departments/").json();
+            toast.success("Department created successfully!");
+            router.push("/departments");
+        } catch (error) {
+            toast.error("Failed to create department. Please try again.");
+            console.error("Error creating department:", error);
+        }
     }
-
-    
-
-
-
-
 
     return (
         <div className="flex items-center justify-center bg-zinc-50 font-sans dark:bg-black">
