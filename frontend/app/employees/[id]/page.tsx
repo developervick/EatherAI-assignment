@@ -7,6 +7,7 @@ import { Employee, AttendanceRecord } from "@/utils/response-types";
 import { api } from "@/utils/wretch";
 import { useParams } from "next/navigation";
 import { totalPagesCount } from "@/utils/pagination";
+import { CustomError } from "@/utils/response-types";
 
 
 export default function EmployeePage() {
@@ -52,11 +53,15 @@ export default function EmployeePage() {
                 const response: { attendance_records: AttendanceRecord[], total_count: number } = await api.get(`/attendance/${params.id}?page=${attendanceCurrentPage}`).json();
                 setAttendanceRecords(response.attendance_records);
                 setAttendanceTotalPages(totalPagesCount(response.total_count, 10)); // Assuming 10 records per page
-            } catch (error) {
-                error.response.json().then((data: any) => {
-                    toast.error(`Failed to fetch attendance records. ${data.error || 'Unknown error'}`);
-                });
-                console.error("Error fetching attendance records:");
+            } catch (error: CustomError | any) {
+                if (error.response) {
+                    error.response.json().then((data: CustomError) => {
+                        toast.error(`Failed to fetch attendance records. ${data.error || 'Unknown error'}`);
+                    });
+                } else {
+                    toast.error(`Failed to fetch attendance records. ${error instanceof Error ? error.message : 'Unknown error'}`);
+                }
+                console.error("Error fetching attendance records:", error);
             }
         };
 
@@ -65,15 +70,19 @@ export default function EmployeePage() {
 
     const handleNewAttendance = async () => {
         try {
-            const response: AttendanceRecord = await api.post({date: newAttendanceDate.date, status: newAttendanceDate.status}, `/attendance/${params.id}/`).json();
-            setAttendanceRecords(prev => [response, ...prev]);
+            const response: { attendance: AttendanceRecord } = await api.post({date: newAttendanceDate.date, status: newAttendanceDate.status}, `/attendance/${params.id}/`).json();
+            setAttendanceRecords(prev => [response.attendance, ...prev]);
             toast.success("Attendance record added successfully");
             setNewAttendanceDate({date: "", status: true});
             setAttendanceCurrentPage(1);
-        } catch (error) {
-            error.response.json().then((data: any) => {
-                toast.error(`Failed to add attendance record. ${data.error || 'Unknown error'}`);
-            });
+        } catch (error: CustomError | any) {
+            if (error.response) {
+                error.response.json().then((data: CustomError) => {
+                    toast.error(`Failed to add attendance record. ${data.error || 'Unknown error'}`);
+                });
+            } else {
+                toast.error(`Failed to add attendance record. ${error instanceof Error ? error.message : 'Unknown error'}`);
+            }
             console.error("Error adding attendance record:", error);
         }
     }
@@ -83,11 +92,33 @@ export default function EmployeePage() {
             await api.put({status: !status}, `/attendance/update/${id}/`).json();
             setAttendanceRecords(prev => prev.map(record => record.id === id ? {...record, status: !status} : record));
             toast.success("Attendance record updated successfully");
-        } catch (error) {
-            error.response.json().then((data: any) => {
-                toast.error(`Failed to update attendance record. ${data.error || 'Unknown error'}`);
-            });
+        } catch (error: CustomError | any) {
+            if (error.response) {
+                error.response.json().then((data: CustomError) => {
+                    toast.error(`Failed to update attendance record. ${data.error || 'Unknown error'}`);
+                });
+            } else {
+                toast.error(`Failed to update attendance record. ${error instanceof Error ? error.message : 'Unknown error'}`);
+            }
             console.error("Error updating attendance record:", error);
+        }
+    }
+
+    const handleDeleteAttendance = async (id: number) => {
+        console.log("Deleting attendance record with ID:", id);
+        try {
+            await api.delete(`/attendance/delete/${id}/`).res();
+            setAttendanceRecords(prev => prev.filter(record => record.id !== id));
+            toast.success("Attendance record deleted successfully");
+        } catch (error: CustomError | any) {
+            if (error.response) {
+                error.response.json().then((data: CustomError) => {
+                    toast.error(`Failed to delete attendance record. ${data.error || 'Unknown error'}`);
+                });
+            } else {
+                toast.error(`Failed to delete attendance record. ${error instanceof Error ? error.message : 'Unknown error'}`);
+            }
+            console.error("Error deleting attendance record:", error);
         }
     }
 
@@ -155,6 +186,7 @@ export default function EmployeePage() {
                                     </td>
                                     <td className="py-2 px-4 border-b border-gray-500 text-gray-300 flex justify-center">
                                         <button onClick={()=>handleMarkAttendance(record.id, record.status)} className={`px-3 py-2 ${record.status ? 'border border-red-500 hover:bg-red-700' : 'border border-green-500 hover:bg-green-700'} text-white rounded-md transition-colors hover:cursor-pointer`}>{record.status ? "Mark Absent" : "Mark Present"}</button>
+                                        <button onClick={()=>handleDeleteAttendance(record.id)} className="ml-2 px-3 py-2 border border-red-500 hover:bg-red-700 text-white rounded-md transition-colors hover:cursor-pointer">Delete Attendance</button>
                                     </td>
                                 </tr>
                             ))}

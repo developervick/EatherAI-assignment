@@ -30,3 +30,21 @@ export type AttendanceRecord = {
 export type AttendanceResponse = {
   attendanceRecords: AttendanceRecord[];
 };
+
+export type CustomError = {
+  error: string;
+};
+
+export type AttendancePieChartData = {
+  statistics: [
+    { status: boolean; count: number },
+    { status: boolean; count: number }
+  ]
+};
+
+export type OverviewStatistics = {
+  total_employees: number;
+  total_departments: number;
+  total_attendance_records: number;
+  average_attendance_per_employee: number;
+};
