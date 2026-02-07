@@ -22,6 +22,7 @@ export type EmployeeResponse = {
 };
 
 export type AttendanceRecord = {
+  id: number;
   date: string;
   status: boolean;
 };

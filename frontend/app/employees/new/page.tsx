@@ -25,7 +25,9 @@ export default function AddEmployeePage() {
             router.push("/employees");
         }
         catch(error){
-            toast.error(`Failed to add employee. Please try again later. ${error instanceof Error ? error.message : "Unknown error"}`);
+            error.response.json().then((data: any) => {
+                toast.error(`Failed to add employee. ${data.error || 'Unknown error'}`);
+            });
         }
     }
 
@@ -42,7 +44,6 @@ export default function AddEmployeePage() {
         fetchDepartments();
     }, []);
 
-    console.log("Departments:", formData);
     return (
         <div className="flex items-center justify-center bg-zinc-50 font-sans dark:bg-black">
             <main className="flex w-full flex-col py-8 px-16 bg-black">
