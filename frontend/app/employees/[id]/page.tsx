@@ -8,6 +8,7 @@ import { api } from "@/utils/wretch";
 import { useParams } from "next/navigation";
 import { totalPagesCount } from "@/utils/pagination";
 import { CustomError } from "@/utils/response-types";
+import { useSearchParams } from "next/navigation";
 
 
 export default function EmployeePage() {
@@ -31,6 +32,8 @@ export default function EmployeePage() {
 
     const params = useParams();
     const router = useRouter();
+    const searchParams = useSearchParams()
+    const profileImage = searchParams.get('profile')
 
     useEffect(() => {
         const fetchEmployeeDetail = async () => {
@@ -131,7 +134,7 @@ export default function EmployeePage() {
                 <h3 className="text-lg text-zinc-400 dark:text-zinc-500">Viewing employee details</h3>
                 <div className="bg-black flex mt-10 rounded-2xl p-6 min-w-[70%] w-min border border-gray-500">
                     <div >
-                        <Image width={32} height={32} src="/employee-placeholder.png" alt="Employee Avatar" className="h-16 w-16 rounded-full object-cover border border-gray-500" />
+                        <Image width={32} height={32} src={profileImage} alt="Employee Avatar" className="h-16 w-16 rounded-full object-cover border border-gray-500" />
                     </div>
                     <div className="ml-10">
                         <h3 className="text-xl font-bold text-gray-500">Employee ID</h3>

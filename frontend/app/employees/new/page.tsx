@@ -25,7 +25,7 @@ export default function AddEmployeePage() {
             router.push("/employees");
         }
         catch(error){
-            error.response.json().then((data: any) => {
+            error.response.json().then((data) => {
                 toast.error(`Failed to add employee. ${data.error || 'Unknown error'}`);
             });
         }

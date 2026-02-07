@@ -17,6 +17,7 @@
     "strictNullChecks": false,
     "strictFunctionTypes": false,
     "strictPropertyInitialization": false,
+    "useUnknownInCatchVariables": false,
     "alwaysStrict": false,
     "plugins": [
       {

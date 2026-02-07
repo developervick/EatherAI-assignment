@@ -5,7 +5,7 @@ import { getRandomInt } from '@/utils/random-number';
 import { useRouter } from 'next/navigation';
 
  export default function EmployeeListTile({name, position, id}: {name?: string, position?: string, id?: number}) {
-    const [imgSource, setImageSource] = useState(`https://randomuser.me/api/portraits/med/en/${getRandomInt(1, 99)}.jpg`);
+    const [imgSource, setImageSource] = useState(`https://randomuser.me/api/portraits/med/men/${getRandomInt(1, 99)}.jpg`);
     const router = useRouter()
 
     const handleOnClick = () => {

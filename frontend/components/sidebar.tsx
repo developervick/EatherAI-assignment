@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { IoMdHome } from "react-icons/io";
 import { MdPeopleAlt } from "react-icons/md";
-import { IoMdSettings } from "react-icons/io";
 import { FaBuildingUser } from "react-icons/fa6";
+import { BsPersonWorkspace } from "react-icons/bs";
+
 
 
 
@@ -30,10 +31,10 @@ export default function Sidebar() {
             Departments
           </div>
         </Link>
-        <Link href="/settings" className="hover:bg-gray-700 rounded px-3 py-2">
+        <Link href="/developer" className="hover:bg-gray-700 rounded px-3 py-2">
           <div className="flex items-center">
-            <IoMdSettings className="inline-block mr-2 mb-1" />
-            Settings
+            <BsPersonWorkspace className="inline-block mr-2 mb-1" />
+            Developer Profile
           </div>
         </Link>
       </nav>
