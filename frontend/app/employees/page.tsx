@@ -1,21 +1,32 @@
+"use client"
 import Link from "next/link";
 import EmployeeListTile from "@/components/employee-list";
 import { IoMdAddCircle } from "react-icons/io";
+import { useEffect, useState } from "react";
+import { api } from "@/utils/wretch";
+import toast from "react-hot-toast";
+import { Employee, EmployeeResponse } from "@/utils/response-types";
 
 
 export default function Employees() {
-    const employees = [
-        { id: 1, name: "John Doe", position: "Software Engineer" },
-        { id: 2, name: "Jane Smith", position: "Product Manager" },
-        { id: 3, name: "Alice Johnson", position: "UX Designer" },
-        { id: 4, name: "Bob Brown", position: "Data Scientist" },
-        { id: 5, name: "Charlie Davis", position: "DevOps Engineer" },
-        { id: 6, name: "Eve Wilson", position: "QA Engineer" },
-        { id: 7, name: "Frank Miller", position: "Technical Writer" },
-        { id: 8, name: "Grace Lee", position: "HR Manager" },
-        { id: 9, name: "Hank Green", position: "Marketing Specialist" },
-        { id: 10, name: "Ivy White", position: "Sales Representative" },
-    ];
+    const [employees, setEmployees] = useState<Employee[]>([]);
+
+
+  useEffect(() => {
+    
+    const fetchEmployees = async () => {
+      try {
+        // Simulate API call with a timeout
+        const response: EmployeeResponse = await api.get('/employees').json();
+        setEmployees(response.employees);
+      } catch (error) {
+        toast.error(`Failed to fetch employees. ${error instanceof Error ? error.message : 'Unknown error'}`);
+        console.error("Error fetching employees:", error);
+      }
+    };
+
+    fetchEmployees();
+  }, []);
 
 
   return (
@@ -29,8 +40,8 @@ export default function Employees() {
             <div className="mt-10 space-y-4 col-span-4 overflow-scroll h-[70vh] no-scrollbar border border-gray-700 rounded-lg p-4">
               {employees.map((employee) => (
                 <EmployeeListTile key={employee.id} 
-                  name={employee.name} 
-                  position={employee.position} 
+                  name={employee.full_name} 
+                  position={employee.email} 
                   id={employee.id} 
                   />
               ))}

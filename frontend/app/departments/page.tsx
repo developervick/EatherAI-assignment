@@ -6,6 +6,7 @@ import Link from "next/link";
 import { FaBuildingUser } from "react-icons/fa6";
 import { api } from "@/utils/wretch";
 import toast from "react-hot-toast";
+import { DepartmentResponse } from "@/utils/response-types";
 
 export default function DepartmentsPage() {
   const [departments, setDepartments] = useState<{ id: number; name: string; description: string }[]>([]);
@@ -15,9 +16,9 @@ export default function DepartmentsPage() {
 
   const fetchDepartments = async () => {
     try {
-      const response = await api.get("/departments/").json();
+      const response: DepartmentResponse = await api.get("/departments/").json();
       if (isMounted) {
-        setDepartments(response.departments as { id: number; name: string; description: string }[]);
+        setDepartments(response.departments);
       }
     } catch (error) {
       toast.error("Failed to fetch departments. Please try again later.");

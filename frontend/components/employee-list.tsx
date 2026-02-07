@@ -16,7 +16,7 @@ import { useRouter } from 'next/navigation';
         <button className="w-full" onClick={handleOnClick}>
             <div className="flex items-center space-x-4 px-4 py-2 bg-black rounded-lg hover:bg-gray-700 transition-colors duration-200 hover:cursor-pointer border border-gray-700">
                 <Image src={imgSource} onError={() => setImageSource('/images/dummy.avif')} alt="Employee Avatar" width={48} height={48} className="rounded-full"/>
-                <div>
+                <div className='flex flex-col justify-center items-start'>
                     <h3 className="text-white font-semibold">{name}</h3>
                     <p className="text-gray-400 text-sm">{position}</p>
                 </div>

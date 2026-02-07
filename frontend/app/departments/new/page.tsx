@@ -42,7 +42,7 @@ export default function AddDepartmentPage() {
                             </div>
                             <div className="mb-4">
                                 <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
-                                <textarea onChange={(e)=>setFormData({...formData, description: e.target.value})} value={formData.description} id="description" name="description" type="text" required className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-300 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm" placeholder="Description" />
+                                <textarea onChange={(e)=>setFormData({...formData, description: e.target.value})} value={formData.description} id="description" name="description" required className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-300 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm" placeholder="Description" />
                             </div>
                         </div>
                         <div>

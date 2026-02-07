@@ -1,30 +1,48 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Select from 'react-select';
+import { api } from "@/utils/wretch";
+import toast from 'react-hot-toast';
+import { DepartmentResponse, Department } from "@/utils/response-types";
 
 
 
 export default function AddEmployeePage() {
     const [formData, setFormData] = useState({
-        name: "",
+        full_name: "",
         email: "",
-        department: "",
+        department_id: 0,
     });
+    const [departments, setDepartments] = useState<Department[]>([]);
     const router = useRouter();
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        // Handle form submission logic here (e.g., send data to the server)
-        console.log("Form Data:", formData);
-        router.push("/employees"); // Redirect to the employees page after submission
+        try{
+            await api.post(formData, "/employees/").json();
+            toast.success("Employee added successfully!");
+            router.push("/employees");
+        }
+        catch(error){
+            toast.error(`Failed to add employee. Please try again later. ${error instanceof Error ? error.message : "Unknown error"}`);
+        }
     }
 
-    
+    useEffect(() => {
+        const fetchDepartments = async () => {
+            try {
+                const response: DepartmentResponse = await api.get("/departments/").json();
+                setDepartments(response.departments);
+            } catch (error) {
+                toast.error(`Failed to fetch departments. Please try again later. ${error instanceof Error ? error.message : "Unknown error"}`);
+            }
+        }
 
+        fetchDepartments();
+    }, []);
 
-
-
-
+    console.log("Departments:", formData);
     return (
         <div className="flex items-center justify-center bg-zinc-50 font-sans dark:bg-black">
             <main className="flex w-full flex-col py-8 px-16 bg-black">
@@ -37,7 +55,7 @@ export default function AddEmployeePage() {
                         <div className="rounded-md shadow-sm -space-y-px">
                             <div className="mb-4">
                                 <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Full Name</label>
-                                <input onChange={(e)=>setFormData({...formData, name: e.target.value})} value={formData.name} id="name" name="name" type="text" required className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-300 rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm" placeholder="Full Name" />
+                                <input onChange={(e)=>setFormData({...formData, full_name: e.target.value})} value={formData.full_name} id="name" name="name" type="text" required className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-300 rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm" placeholder="Full Name" />
                             </div>
                             <div className="mb-4">
                                 <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
@@ -45,7 +63,21 @@ export default function AddEmployeePage() {
                             </div>
                             <div className="mb-4">
                                 <label htmlFor="department" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Department</label>
-                                <input value={formData.department || ""} onChange={(e)=>setFormData({...formData, department: e.target.value})} id="department" name="department" type="text" required className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-300 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm" placeholder="Department" />
+                                <Select
+                                    id="department"
+                                    instanceId="department-select"
+                                    options={departments.map(dept => ({ value: dept.id, label: dept.name }))}
+                                    onChange={(selectedOption) => setFormData({...formData, department_id: selectedOption ? selectedOption.value : 0})}
+                                    placeholder="Select Department"
+                                    classNames={{
+                                        control: (state) => `!bg-black !text-gray-300 ${state.isFocused ? '!border-blue-500' : '!border-gray-300'} !focus:outline-none !focus:ring-blue-500 !focus:border-blue-500`,
+                                        menu: () => "text-gray-300 !bg-black !border !border-gray-300",
+                                        option: (state) => `!bg-black ${state.isFocused ? '!bg-gray-700' : ''} ${state.isSelected ? '!bg-blue-700 !text-white' : ''}`,
+                                        singleValue: () => "!text-gray-300",
+                                    }}
+                                    classNamePrefix="department-select"
+                                />
+                                
                             </div>
                         </div>
                         <div>
