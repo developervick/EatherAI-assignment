@@ -21,7 +21,8 @@ npm -v
 
 ### 1. Clone the Repository
 
-``` git clone https://github.com/developervick/EatherAI-assignment.git
+```bash
+git clone https://github.com/developervick/EatherAI-assignment.git
 cd EatherAI-assignment.git
 ```
 
