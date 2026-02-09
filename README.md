@@ -34,6 +34,14 @@ npm install
 ```
 #### This installs all required dependencies listed in package.json.
 
+### Environment setup
+```bash
+touch .env.local
+
+# Add varible in local file
+NEXT_PUBLIC_API_BASE_URL=http://localhost:8000
+```
+
 ### Running the Project Locally
 
 ### ⚠️ Important:
