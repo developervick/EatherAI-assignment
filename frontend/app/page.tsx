@@ -101,7 +101,7 @@ export default function Home() {
                   options={{
                     title: "Present vs Absent",
                     pieHole: 0.4,
-                    colors: ["#F44336", "#4CAF50],
+                    colors: ["#F44336", "#4CAF50"],
                     backgroundColor: "transparent",
                     textStyle: {color: "#333"},
                     legend: { position: "bottom", textStyle: { color: "#fff" } },
