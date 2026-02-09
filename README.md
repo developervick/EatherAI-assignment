@@ -23,7 +23,7 @@ npm -v
 
 ```bash
 git clone https://github.com/developervick/EatherAI-assignment.git
-cd EatherAI-assignment.git
+cd EatherAI-assignment
 ```
 
 ### 2. Install Dependencies
