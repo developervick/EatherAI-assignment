@@ -28,7 +28,10 @@ cd EatherAI-assignment
 
 ### 2. Install Dependencies
 
-```npm install```
+```
+cd frontend
+npm install
+```
 #### This installs all required dependencies listed in package.json.
 
 ### Running the Project Locally
