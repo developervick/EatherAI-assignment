@@ -21,8 +21,9 @@ npm -v
 
 ### 1. Clone the Repository
 
-``` git clone <repository-url>
-cd <project-folder>
+```bash
+git clone https://github.com/developervick/EatherAI-assignment.git
+cd EatherAI-assignment.git
 ```
 
 ### 2. Install Dependencies
