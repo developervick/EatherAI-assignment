@@ -91,7 +91,7 @@ export default function Home() {
               <p className="text-6xl font-bold">{statistics.totalAttendance}</p>
             </ChartCard>
             <ChartCard title="Average Attendance per Employee">
-              <p className="text-6xl font-bold">{statistics.averageAttendancePerEmployee}</p>
+              <p className="text-6xl font-bold">{(statistics.averageAttendancePerEmployee).toFixed(2)}</p>
             </ChartCard>
             <ChartCard title="Total present vs absent">
               <Chart
