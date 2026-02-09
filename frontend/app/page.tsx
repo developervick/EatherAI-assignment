@@ -7,6 +7,7 @@ import { AttendancePieChartData, OverviewStatistics } from "../utils/response-ty
 import { api } from "@/utils/wretch";
 
 
+
 export default function Home() {
   const [pieChartData, setPieChartData] = useState([
     ["Status", "Count"],
