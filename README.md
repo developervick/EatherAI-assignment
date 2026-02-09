@@ -44,8 +44,8 @@ cd EatherAI-assignment.git
 
 http://localhost:3000
 
-Environment Variables (Required)
-Create a **.env.local** file in the root directory
+Environment Variables (Required) </br>
+Create a **.env.local** file in the root directory </br>
 Add the required variables
 
 NEXT_PUBLIC_API_URL=http://localhost:8000
