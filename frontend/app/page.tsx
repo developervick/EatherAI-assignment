@@ -7,12 +7,11 @@ import { AttendancePieChartData, OverviewStatistics } from "../utils/response-ty
 import { api } from "@/utils/wretch";
 
 
-
 export default function Home() {
   const [pieChartData, setPieChartData] = useState([
     ["Status", "Count"],
-    ["Present", 0],
     ["Absent", 0],
+    ["Present", 0],
   ]);
 
   const [statistics, setStatistics] = useState({
@@ -55,7 +54,6 @@ export default function Home() {
     fetchAttendanceData();
   }, []);
 
-  console.log(statistics);
 
   return (
     <div className="flex items-center justify-center bg-zinc-50 font-sans dark:bg-black">
